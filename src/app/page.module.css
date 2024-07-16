@@ -1,0 +1,39 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding-left: 6rem;
+  padding-right: 6rem;
+  min-height: 100vh;
+}
+
+.searchBar {
+  display: flex;
+  width: 20vw;
+  height: 10vh;
+  justify-content: space-around;
+  flex-direction: column;
+  text-align: center;
+  margin-top: 2%;
+  margin-bottom: 2%;
+  box-sizing: border-box;
+}
+
+.list {
+  width: 100vw;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  box-sizing: border-box;
+}
+
+.list > * {
+  margin-bottom: 5vmin;
+}
+
+@media only screen and (max-width: 768px) {
+  .searchBar {
+    width: 80vw;
+  }
+}

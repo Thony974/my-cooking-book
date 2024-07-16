@@ -1,0 +1,26 @@
+.detailsContainer {
+  padding: 1vmax;
+}
+
+.detailsTitle {
+  text-align: center;
+}
+
+.detailsEdit {
+  display: flex;
+  margin-top: 1vh;
+  margin-bottom: 1vh;
+  justify-content: center;
+}
+
+.detailsHashtags {
+  text-align: center;
+}
+
+.detailsImg {
+  width: 20vmax;
+  height: 20vmax;
+  margin-left: auto;
+  margin-right: auto;
+  border: solid thin black;
+}
