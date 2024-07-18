@@ -39,8 +39,8 @@ export default async function Details({
         ))}
       </ul>
       <h3>Preparation</h3>
-      {parseData(recipe.description).map((descriptionStep) => (
-        <p>{descriptionStep}</p>
+      {parseData(recipe.description).map((descriptionStep, index) => (
+        <p key={index}>{descriptionStep}</p>
       ))}
     </div>
   ) : (

@@ -1,31 +1,27 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 
 import { Recipe } from "@prisma/client";
 
-import { Params, SearchParams } from "../interfaces";
 import { createRecipe, getRecipe, updateRecipe } from "./actions";
 import { parseDataToTextList } from "../services/database/parser";
 
 import styles from "./page.module.css";
+import { useSearchParams } from "next/navigation";
 
-export default function Edit({
-  params,
-  searchParams,
-}: {
-  params: Params;
-  searchParams: SearchParams;
-}) {
-  const editForm = useRef<HTMLFormElement>(null);
+function EditionForm() {
+  const formRef = useRef<HTMLFormElement>(null);
 
   const [recipe, setRecipe] = useState<Recipe | null>(null);
 
+  const searchParams = useSearchParams();
+  const paramsId = searchParams.get("id");
+
   const handleSubmit = async (formData: FormData) => {
-    const paramsId = searchParams.id;
-    if (paramsId === undefined) {
+    if (paramsId === null) {
       await createRecipe(formData);
-      editForm.current?.reset();
+      formRef.current?.reset();
     } else {
       await updateRecipe(formData, parseInt(paramsId as string));
     }
@@ -42,11 +38,11 @@ export default function Edit({
       }
     };
 
-    if (searchParams.id) fetchRecipe(searchParams.id as string);
-  }, []);
+    if (paramsId !== null) fetchRecipe(paramsId);
+  }, [searchParams]);
 
   return (
-    <form ref={editForm} className={styles.form} action={handleSubmit}>
+    <form ref={formRef} className={styles.form} action={handleSubmit}>
       <div className={styles.formContainer}>
         <label className={styles.formItem}>
           Title(*):
@@ -90,5 +86,13 @@ export default function Edit({
         </div>
       </div>
     </form>
+  );
+}
+
+export default function Edit() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <EditionForm />
+    </Suspense>
   );
 }
