@@ -2,6 +2,8 @@
 
 import { useRouter } from "next/navigation";
 
+import { Rating } from "primereact/rating";
+
 import { Recipe } from "@prisma/client";
 
 import styles from "./card.module.css";
@@ -27,6 +29,9 @@ export function Card({ recipe }: CardProps) {
         </ul>
       </div>
       <h5>{recipe.title}</h5>
+      <div className={styles.rating}>
+        <Rating value={recipe.rate} cancel={false} />
+      </div>
     </div>
   );
 }

@@ -11,3 +11,7 @@ export function parseDataToTextList(data: string, textSeparator = "\n") {
 export function formatTextListToStore(data: string, textSeparator = "\n") {
   return data.replaceAll(textSeparator, DATABASE_SEPARATOR);
 }
+
+export function formatCommentsToStore(comments: string) {
+  return comments.length > 0 ? comments : null;
+}

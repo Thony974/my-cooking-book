@@ -2,16 +2,22 @@
 
 import { Suspense, useEffect, useRef, useState } from "react";
 
+import Link from "next/link";
+
+import { useSearchParams } from "next/navigation";
+
+import { Toast } from "primereact/toast";
+
 import { Recipe } from "@prisma/client";
 
 import { createRecipe, getRecipe, updateRecipe } from "./actions";
 import { parseDataToTextList } from "../services/database/parser";
 
 import styles from "./page.module.css";
-import { useSearchParams } from "next/navigation";
 
 function EditionForm() {
   const formRef = useRef<HTMLFormElement>(null);
+  const toastRef = useRef<Toast>(null);
 
   const [recipe, setRecipe] = useState<Recipe | null>(null);
 
@@ -20,10 +26,18 @@ function EditionForm() {
 
   const handleSubmit = async (formData: FormData) => {
     if (paramsId === null) {
-      await createRecipe(formData);
+      const newRecipeId = await createRecipe(formData);
       formRef.current?.reset();
+      toastRef.current?.show({
+        severity: "success",
+        summary: "Recette ajoutée",
+        detail: (
+          <Link href={`/details?id=${newRecipeId.toString()}`}>Voir</Link>
+        ),
+        life: 3000,
+      });
     } else {
-      await updateRecipe(formData, parseInt(paramsId as string));
+      await updateRecipe(parseInt(paramsId as string), formData);
     }
   };
 
@@ -75,15 +89,16 @@ function EditionForm() {
         <label className={styles.formItem}>
           Preparation(*):
           <textarea
-            name="description"
+            name="preparation"
             required
-            defaultValue={recipe ? parseDataToTextList(recipe.description) : ""}
+            defaultValue={recipe ? parseDataToTextList(recipe.preparation) : ""}
           />
         </label>
 
         <div className={styles.formSubmit}>
           <button type="submit">Valider</button>
         </div>
+        <Toast ref={toastRef} />
       </div>
     </form>
   );

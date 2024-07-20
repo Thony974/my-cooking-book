@@ -5,6 +5,7 @@ import Edition from "../ui/Edition";
 import { getRecipe } from "../edit/actions";
 
 import styles from "./page.module.css";
+import Comments from "../ui/Comments";
 
 export default async function Details({
   params,
@@ -39,9 +40,16 @@ export default async function Details({
         ))}
       </ul>
       <h3>Preparation</h3>
-      {parseData(recipe.description).map((descriptionStep, index) => (
-        <p key={index}>{descriptionStep}</p>
+      {parseData(recipe.preparation).map((preparationStep, index) => (
+        <p key={index}>{preparationStep}</p>
       ))}
+      <div className={styles.detailsComment}>
+        <Comments
+          id={recipe.id}
+          comments={recipe.comments}
+          rate={recipe.rate}
+        />
+      </div>
     </div>
   ) : (
     <p>Recipe not found</p>

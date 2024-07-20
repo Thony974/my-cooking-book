@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 
+import "primereact/resources/themes/saga-green/theme.css";
+import "primeicons/primeicons.css";
+
 import "./globals.css";
 import Link from "next/link";
 
@@ -21,7 +24,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <div className="layoutHeader">
           <Link href="/" className="layoutHeader">
-            My cooking book
+            Mon cahier de recette
           </Link>
         </div>
         {children}

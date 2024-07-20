@@ -31,10 +31,15 @@
   box-sizing: border-box;
 }
 
+.rating {
+  display: flex;
+  justify-content: center;
+}
+
 @media only screen and (max-width: 768px) {
   .cardContainer {
     width: 40vmax;
-    height: 40vmax;
+    height: 45vmax;
     font-size: 6vmin;
   }
 }

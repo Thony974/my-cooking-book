@@ -14,9 +14,6 @@ import { IconField } from "primereact/iconfield";
 import { InputText } from "primereact/inputtext";
 import { InputIcon } from "primereact/inputicon";
 
-import "primereact/resources/themes/saga-green/theme.css";
-import "primeicons/primeicons.css";
-
 import styles from "./searchBar.module.css";
 
 const options = [
