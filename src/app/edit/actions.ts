@@ -3,6 +3,7 @@
 import { prisma } from "../services/database/prisma";
 import { formatTextListToStore } from "../services/database/parser";
 import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
 
 export async function getRecipe(id: number) {
   return await prisma.recipe.findUnique({ where: { id: id } });
@@ -12,11 +13,13 @@ export async function createRecipe(formData: FormData) {
   const recipe = await prisma.recipe.create({
     data: {
       title: formData.get("title") as string,
-      hashtags: formatTextListToStore(formData.get("hashtags") as string, "#"),
+      hashtags: formData.get("hashtags") as string,
       ingredients: formatTextListToStore(formData.get("ingredients") as string),
       preparation: formatTextListToStore(formData.get("preparation") as string),
     },
   });
+
+  revalidatePath("/");
 
   return recipe.id;
 }
@@ -28,7 +31,7 @@ export async function updateRecipe(id: number, formData: FormData) {
     where: { id: id },
     data: {
       title: formData.get("title") as string,
-      hashtags: formatTextListToStore(formData.get("hashtags") as string, "#"),
+      hashtags: formData.get("hashtags") as string,
       ingredients: formatTextListToStore(formData.get("ingredients") as string),
       preparation: formatTextListToStore(formData.get("preparation") as string),
     },

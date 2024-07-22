@@ -59,7 +59,7 @@ function EditionForm() {
     <form ref={formRef} className={styles.form} action={handleSubmit}>
       <div className={styles.formContainer}>
         <label className={styles.formItem}>
-          Title(*):
+          Titre(*):
           <input
             name="title"
             required

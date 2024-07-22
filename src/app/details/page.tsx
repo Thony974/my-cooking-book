@@ -23,11 +23,7 @@ export default async function Details({
       <h1 className={styles.detailsTitle}>{recipe.title}</h1>
 
       <div className={styles.detailsHashtags}>
-        {recipe.hashtags
-          ? parseData(recipe.hashtags).map((hashtag) => (
-              <span key={hashtag}>{`#${hashtag}`}</span>
-            ))
-          : ""}
+        <span>{recipe.hashtags ?? ""}</span>
       </div>
       <div className={styles.detailsEdit}>
         <Edition id={recipe.id} />

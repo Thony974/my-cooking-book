@@ -59,7 +59,6 @@ export default async function Home({
     <main className={styles.main}>
       <div className={styles.searchBar}>
         <SearchBar />
-        <Link href="/edit">+ Nouvelle recette</Link>
       </div>
       <div className={styles.list}>
         {recipes.map((recipe, index) => (

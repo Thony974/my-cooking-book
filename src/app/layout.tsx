@@ -28,6 +28,9 @@ export default function RootLayout({
           <Link href="/" className={`homeLink ${rochester.className}`}>
             Mon cahier de recette
           </Link>
+          <Link href="/edit" className={`createLink `}>
+            + Ajouter
+          </Link>
         </div>
         {children}
         <div className="layoutFooter">
