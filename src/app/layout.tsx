@@ -1,13 +1,15 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Rochester } from "next/font/google";
+
+import Link from "next/link";
 
 import "primereact/resources/themes/saga-green/theme.css";
 import "primeicons/primeicons.css";
 
 import "./globals.css";
-import Link from "next/link";
 
 const inter = Inter({ subsets: ["latin"] });
+const rochester = Rochester({ subsets: ["latin"], weight: "400" });
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -23,13 +25,13 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <div className="layoutHeader">
-          <Link href="/" className="layoutHeader">
+          <Link href="/" className={`homeLink ${rochester.className}`}>
             Mon cahier de recette
           </Link>
         </div>
         {children}
         <div className="layoutFooter">
-          <span>@Thony974</span>
+          <span className="copyright">©Thony974</span>
         </div>
       </body>
     </html>

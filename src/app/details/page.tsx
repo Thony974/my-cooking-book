@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 import { parseData } from "../services/database/parser";
 
 import { Params, SearchParams } from "../interfaces";
@@ -31,7 +33,14 @@ export default async function Details({
         <Edition id={recipe.id} />
       </div>
       <div className={styles.detailsImg}>
-        {/**TODO<Image src="/recipeImg.png" alt="recipeImg" layout="reponsive" objectFit='contain'/>*/}
+        <Image
+          src="/recipeImg.jpeg"
+          alt="recipeImg"
+          width={0}
+          height={0}
+          sizes="20vmax"
+          style={{ width: "100%", height: "100%" }}
+        />
       </div>
       <h3>Ingredients</h3>
       <ul>

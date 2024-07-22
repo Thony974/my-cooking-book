@@ -11,10 +11,19 @@ body {
   height: 5vmax;
   font-size: larger;
   text-align: center;
+  text-decoration: none;
   z-index: 10;
 
   color: #89a1a3;
   background-color: #134347;
+}
+
+.homeLink {
+  position: relative;
+  font-size: xx-large;
+  top: 3vh;
+  text-decoration: none;
+  color: #ffffff;
 }
 
 .layoutFooter {
@@ -26,9 +35,22 @@ body {
   background-color: #134347;
 }
 
+.copyright {
+  position: relative;
+  top: 1vh;
+}
+
 @media only screen and (max-width: 768px) {
   body {
     font-size: 4vmin;
+  }
+
+  .layoutHeader {
+    height: 8vmax;
+  }
+
+  .homeLink {
+    top: 1vh;
   }
 }
 
