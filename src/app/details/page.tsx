@@ -1,13 +1,12 @@
 import Image from "next/image";
 
-import { parseData } from "../services/database/parser";
-
-import { Params, SearchParams } from "../interfaces";
+import { Params, SearchParams } from "../models/SearchParamsInterface";
 import Edition from "../ui/Edition";
 import { getRecipe } from "../edit/actions";
 
 import styles from "./page.module.css";
 import Comments from "../ui/Comments";
+import { parseData } from "../services/database/parser";
 
 export default async function Details({
   params,

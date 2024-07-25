@@ -6,39 +6,98 @@ import Link from "next/link";
 
 import { useSearchParams } from "next/navigation";
 
-import { Toast } from "primereact/toast";
-
 import { Recipe } from "@prisma/client";
 
+import { Toast } from "primereact/toast";
+import { RadioButton, RadioButtonChangeEvent } from "primereact/radiobutton";
+
 import { createRecipe, getRecipe, updateRecipe } from "./actions";
-import { parseDataToTextList } from "../services/database/parser";
+import {
+  formatTextListToStore,
+  parseDataToTextList,
+} from "../services/database/parser";
 
 import styles from "./page.module.css";
+import {
+  RecipeCategory,
+  RecipeCategories,
+  PartialPlainObjectRecipe,
+  PlainObjectRecipe,
+} from "../models/Recipe";
 
 function EditionForm() {
   const formRef = useRef<HTMLFormElement>(null);
   const toastRef = useRef<Toast>(null);
 
-  const [recipe, setRecipe] = useState<Recipe | null>(null);
+  const [recipe, setRecipe] = useState<PlainObjectRecipe | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState(
+    RecipeCategory.Unknown
+  );
 
   const searchParams = useSearchParams();
   const paramsId = searchParams.get("id");
 
   const handleSubmit = async (formData: FormData) => {
-    if (paramsId === null) {
-      const newRecipeId = await createRecipe(formData);
-      formRef.current?.reset();
-      toastRef.current?.show({
-        severity: "success",
-        summary: "Recette ajoutée",
-        detail: (
-          <Link href={`/details?id=${newRecipeId.toString()}`}>Voir</Link>
-        ),
-        life: 3000,
-      });
-    } else {
-      await updateRecipe(parseInt(paramsId as string), formData);
+    const titleForm = formData.get("title");
+    const hashtagsForm = formData.get("hashtags");
+    const ingredientsForm = formData.get("ingredients");
+    const preparationForm = formData.get("preparation");
+
+    if (!titleForm || !ingredientsForm || !preparationForm) {
+      showCreateOrUpdateError("Required form data missing");
+      return;
     }
+
+    // Only fill hashtags if not empty
+    const hashtags =
+      hashtagsForm && hashtagsForm.toString()?.length
+        ? hashtagsForm.toString()
+        : null;
+
+    const partialRecipe: PartialPlainObjectRecipe = {
+      title: titleForm.toString(),
+      category: selectedCategory,
+      hashtags: hashtags,
+      ingredients: formatTextListToStore(ingredientsForm.toString()),
+      preparation: formatTextListToStore(preparationForm.toString()),
+    };
+
+    if (paramsId === null) {
+      try {
+        const newRecipe = await createRecipe(partialRecipe);
+        showCreateSuccess(newRecipe.id);
+        formRef.current?.reset();
+      } catch (error: any) {
+        showCreateOrUpdateError(`Echec lors de la création ${error.message}`);
+        // TODO: Logger to display entire error...
+      }
+    } else {
+      const id = parseInt(paramsId as string);
+      try {
+        await updateRecipe(id, partialRecipe);
+      } catch (error: any) {
+        showCreateOrUpdateError(`Echec de la mise à jour ${error.message}`);
+        // TODO: Logger to display entire error...
+      }
+    }
+  };
+
+  const showCreateSuccess = (recipeId: number) => {
+    toastRef.current?.show({
+      severity: "success",
+      summary: "Recette ajoutée",
+      detail: <Link href={`/details?id=${recipeId.toString()}`}>Voir</Link>,
+      life: 3000,
+    });
+  };
+
+  const showCreateOrUpdateError = (error: string) => {
+    toastRef.current?.show({
+      severity: "error",
+      summary: "Erreur",
+      detail: error,
+      life: 3000,
+    });
   };
 
   useEffect(() => {
@@ -55,6 +114,10 @@ function EditionForm() {
     if (paramsId !== null) fetchRecipe(paramsId);
   }, [searchParams]);
 
+  useEffect(() => {
+    if (recipe) setSelectedCategory(recipe.category);
+  }, [recipe]);
+
   return (
     <form ref={formRef} className={styles.form} action={handleSubmit}>
       <div className={styles.formContainer}>
@@ -68,13 +131,30 @@ function EditionForm() {
         </label>
 
         <label className={styles.formItem}>
+          Catégorie:
+          <div className={styles.category}>
+            {RecipeCategories.map((category) => {
+              const categoryId = `category_${category.value.toString()}`;
+              return (
+                <div key={categoryId}>
+                  <RadioButton
+                    inputId={categoryId}
+                    value={category.value}
+                    checked={category.value === selectedCategory}
+                    onChange={(event: RadioButtonChangeEvent) =>
+                      setSelectedCategory(event.value)
+                    }
+                  />
+                  <label htmlFor={categoryId}>{category.name}</label>
+                </div>
+              );
+            })}
+          </div>
+        </label>
+
+        <label className={styles.formItem}>
           Hashtags:
-          <input
-            name="hashtags"
-            defaultValue={
-              recipe?.hashtags ? parseDataToTextList(recipe?.hashtags) : ""
-            }
-          />
+          <input name="hashtags" defaultValue={recipe?.hashtags ?? ""} />
         </label>
 
         <label className={styles.formItem}>

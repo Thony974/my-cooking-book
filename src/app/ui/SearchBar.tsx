@@ -1,11 +1,6 @@
 "use client";
-import {
-  ChangeEvent,
-  MouseEventHandler,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 
 import { useRouter } from "next/navigation";
 
@@ -14,12 +9,18 @@ import { IconField } from "primereact/iconfield";
 import { InputText } from "primereact/inputtext";
 import { InputIcon } from "primereact/inputicon";
 
-import styles from "./searchBar.module.css";
+import { useDebounce } from "../lib/debounce";
 
-const options = [
+import styles from "./searchBar.module.css";
+import { RecipeCategories } from "../models/Recipe";
+
+let options = [
   { label: "Titre", value: "title" },
   { label: "Hashtag", value: "hashtags" },
 ];
+for (const { name, value } of RecipeCategories) {
+  options.push({ label: name, value: `cat_${value.toString()}` });
+}
 
 export function SearchBar() {
   const router = useRouter();
@@ -29,9 +30,12 @@ export function SearchBar() {
   const [key, setKey] = useState<string>("");
   const [filters, setFilters] = useState<string[]>([]);
 
+  // Avoid extra requests to server on search
+  const debouncedInputValue = useDebounce(key, 500);
+
   useEffect(() => {
     router.push(key ? `/?key=${key}&filters=${filters}` : "/");
-  }, [key, filters]);
+  }, [debouncedInputValue, filters]);
 
   const onInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
@@ -68,7 +72,8 @@ export function SearchBar() {
       </div>
       <div className={styles.searchBarFilter}>
         <MultiSelect
-          placeholder="Trier..."
+          style={{ maxWidth: "100%" }}
+          placeholder="Filtres"
           value={filters}
           options={options}
           onChange={onSelectChange}

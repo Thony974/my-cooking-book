@@ -12,10 +12,12 @@ datasource db {
 
 model Recipe {
   id Int @id @default(autoincrement())
+  creationDate String
   title String
-  ingredients String
-  preparation String
+  category Int @default(-1)
+  ingredients Bytes
+  preparation Bytes
   hashtags String?
   rate Int @default(0)
-  comments String?
+  comments Bytes?
 }

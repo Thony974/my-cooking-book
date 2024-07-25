@@ -1,5 +1,7 @@
 const DATABASE_SEPARATOR = "|";
 
+export const BUFFER_ENCODING = "utf-8";
+
 export function parseData(data: string) {
   return data.split(DATABASE_SEPARATOR);
 }
@@ -13,5 +15,5 @@ export function formatTextListToStore(data: string, textSeparator = "\n") {
 }
 
 export function formatCommentsToStore(comments: string) {
-  return comments.length > 0 ? comments : null;
+  return comments.length > 0 ? Buffer.from(comments, BUFFER_ENCODING) : null;
 }

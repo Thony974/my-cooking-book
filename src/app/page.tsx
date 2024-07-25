@@ -1,33 +1,10 @@
-import { prisma } from "./services/database/prisma";
-
 import { Card } from "./ui/Card";
 import { SearchBar } from "./ui/SearchBar";
 
 import styles from "./page.module.css";
-import Link from "next/link";
-import { Params, SearchParams } from "./interfaces";
-
-// TODO export in another files...
-const findMany = () => {
-  return prisma.recipe.findMany();
-};
-const findManyByTitle = (key: string) => {
-  return prisma.recipe.findMany({
-    where: { title: { contains: key } },
-  });
-};
-const findManyByHashtags = (key: string) => {
-  return prisma.recipe.findMany({
-    where: { hashtags: { contains: key } },
-  });
-};
-const findManyByTitleOrHashtags = (key: string) => {
-  return prisma.recipe.findMany({
-    where: {
-      OR: [{ title: { contains: key } }, { hashtags: { contains: key } }],
-    },
-  });
-};
+import { Params, SearchParams } from "./models/SearchParamsInterface";
+import { BUFFER_ENCODING, parseData } from "./services/database/parser";
+import findMany from "./services/database/findManyRequest";
 
 export default async function Home({
   params,
@@ -36,21 +13,7 @@ export default async function Home({
   params: Params;
   searchParams: SearchParams;
 }) {
-  const find = (key: string, filters: string | undefined) => {
-    if (filters === undefined) return findMany();
-
-    if (!filters.length) return findManyByTitleOrHashtags(key);
-
-    if (filters.includes("title") && filters.includes("hashtags")) {
-      return findManyByTitleOrHashtags(key);
-    } else if (filters.includes("title")) {
-      return findManyByTitle(key);
-    } else {
-      return findManyByHashtags(key);
-    }
-  };
-
-  const recipes = await find(
+  const recipes = await findMany(
     searchParams.key as string,
     searchParams.filters as string
   );
@@ -62,7 +25,15 @@ export default async function Home({
       </div>
       <div className={styles.list}>
         {recipes.map((recipe, index) => (
-          <Card key={`${recipe.title}_${index}`} recipe={recipe} />
+          <Card
+            key={`${recipe.title}_${index}`}
+            recipeId={recipe.id}
+            title={recipe.title}
+            ingredients={parseData(
+              recipe.ingredients.toString(BUFFER_ENCODING)
+            )}
+            rate={recipe.rate}
+          />
         ))}
       </div>
     </main>

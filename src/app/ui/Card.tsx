@@ -4,33 +4,33 @@ import { useRouter } from "next/navigation";
 
 import { Rating } from "primereact/rating";
 
-import { Recipe } from "@prisma/client";
-
 import styles from "./card.module.css";
-import { parseData } from "../services/database/parser";
 
 export interface CardProps {
-  recipe: Recipe;
+  recipeId: number;
+  title: string;
+  ingredients: string[];
+  rate: number;
 }
 
-export function Card({ recipe }: CardProps) {
+export function Card({ recipeId, title, ingredients, rate }: CardProps) {
   const router = useRouter();
 
   return (
     <div
       className={styles.cardContainer}
-      onClick={() => router.push(`/details?id=${recipe.id}`)}
+      onClick={() => router.push(`/details?id=${recipeId.toString()}`)}
     >
       <div className={styles.recipeContainer}>
         <ul>
-          {parseData(recipe.ingredients).map((ingredient) => (
+          {ingredients.map((ingredient) => (
             <li key={ingredient}>{ingredient}</li>
           ))}
         </ul>
       </div>
-      <h5>{recipe.title}</h5>
+      <h5>{title}</h5>
       <div className={styles.rating}>
-        <Rating value={recipe.rate} cancel={false} />
+        <Rating value={rate} cancel={false} />
       </div>
     </div>
   );
