@@ -1,0 +1,14 @@
+.searchBarContainer {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  box-sizing: border-box;
+}
+
+.searchBar {
+  width: 80%;
+}
+
+.searchBarFilter {
+  width: 35%;
+}

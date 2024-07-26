@@ -1,0 +1,16 @@
+.edit {
+  display: flex;
+  width: 8vw;
+  justify-content: space-between;
+}
+
+.delete {
+  text-decoration: underline;
+  color: red;
+}
+
+@media only screen and (max-width: 768px) {
+  .edit {
+    width: 36vw;
+  }
+}
