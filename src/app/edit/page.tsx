@@ -3,10 +3,7 @@
 import { Suspense, useEffect, useRef, useState } from "react";
 
 import Link from "next/link";
-
 import { useSearchParams } from "next/navigation";
-
-import { Recipe } from "@prisma/client";
 
 import { Toast } from "primereact/toast";
 import { RadioButton, RadioButtonChangeEvent } from "primereact/radiobutton";
@@ -64,8 +61,8 @@ function EditionForm() {
 
     if (paramsId === null) {
       try {
-        const newRecipe = await createRecipe(partialRecipe);
-        showCreateSuccess(newRecipe.id);
+        const newRecipeId = await createRecipe(partialRecipe);
+        showCreateSuccess(newRecipeId);
         formRef.current?.reset();
       } catch (error: any) {
         showCreateOrUpdateError(`Echec lors de la création ${error.message}`);

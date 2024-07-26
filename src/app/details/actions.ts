@@ -1,11 +1,13 @@
 "use server";
 
+import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { formatCommentsToStore } from "../services/database/parser";
 import { prisma } from "../services/database/prisma";
 
 export async function deleteRecipe(paramsId: number) {
   await prisma.recipe.delete({ where: { id: paramsId } });
+  redirect(`/`);
 }
 
 export async function updateRecipeMetaData(

@@ -53,7 +53,7 @@ export async function createRecipe({
 
   revalidatePath("/");
 
-  return recipe;
+  return recipe.id;
 }
 
 export async function updateRecipe(

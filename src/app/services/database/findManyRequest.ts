@@ -46,7 +46,10 @@ const findManyByCategory = (categoryFilters: number[]) => {
   });
 };
 
-export default function (key: string, filters: string | undefined) {
+export default function findManyRequest(
+  key: string,
+  filters: string | undefined
+) {
   if (filters === undefined) return findMany();
 
   // Default: include all category:
