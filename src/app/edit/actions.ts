@@ -3,10 +3,9 @@
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 
-import { prisma } from "../services/database/prisma";
-
-import { PartialPlainObjectRecipe, PlainObjectRecipe } from "../models/Recipe";
-import { BUFFER_ENCODING } from "../services/database/parser";
+import { PartialPlainObjectRecipe, PlainObjectRecipe } from "@/models/Recipe";
+import { prisma } from "@/services/database/prisma";
+import { BUFFER_ENCODING } from "@/services/database/parser";
 
 /**
  * Get plain Object Recipe from original one

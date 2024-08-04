@@ -1,7 +1,6 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-
 import { Rating } from "primereact/rating";
 
 import styles from "./card.module.css";

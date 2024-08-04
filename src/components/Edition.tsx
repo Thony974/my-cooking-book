@@ -1,13 +1,11 @@
 "use client";
 
 import { MouseEvent } from "react";
-
 import Link from "next/link";
 
 import { ConfirmPopup, confirmPopup } from "primereact/confirmpopup";
 
-import { deleteRecipe } from "../details/actions";
-
+import { deleteRecipe } from "@/app/details/actions";
 import styles from "./edition.module.css";
 
 export interface EditionProps {

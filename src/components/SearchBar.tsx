@@ -9,10 +9,9 @@ import { IconField } from "primereact/iconfield";
 import { InputText } from "primereact/inputtext";
 import { InputIcon } from "primereact/inputicon";
 
-import { useDebounce } from "../lib/debounce";
-
+import { useDebounce } from "@/lib/debounce";
+import { RecipeCategories } from "@/models/Recipe";
 import styles from "./searchBar.module.css";
-import { RecipeCategories } from "../models/Recipe";
 
 let options = [
   { label: "Titre", value: "title" },

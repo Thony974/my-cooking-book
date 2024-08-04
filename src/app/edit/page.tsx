@@ -10,17 +10,17 @@ import { RadioButton, RadioButtonChangeEvent } from "primereact/radiobutton";
 
 import { createRecipe, getRecipe, updateRecipe } from "./actions";
 import {
-  formatTextListToStore,
-  parseDataToTextList,
-} from "../services/database/parser";
-
-import styles from "./page.module.css";
-import {
   RecipeCategory,
   RecipeCategories,
   PartialPlainObjectRecipe,
   PlainObjectRecipe,
-} from "../models/Recipe";
+} from "@/models/Recipe";
+import {
+  formatTextListToStore,
+  parseDataToTextList,
+} from "@/services/database/parser";
+
+import styles from "./page.module.css";
 
 function EditionForm() {
   const formRef = useRef<HTMLFormElement>(null);

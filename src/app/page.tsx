@@ -1,10 +1,10 @@
-import { Card } from "./ui/Card";
-import { SearchBar } from "./ui/SearchBar";
+import { Card } from "@/components/Card";
+import { SearchBar } from "@/components/SearchBar";
+import { Params, SearchParams } from "@/models/SearchParamsInterface";
+import { BUFFER_ENCODING, parseData } from "@/services/database/parser";
+import findMany from "@/services/database/findManyRequest";
 
 import styles from "./page.module.css";
-import { Params, SearchParams } from "./models/SearchParamsInterface";
-import { BUFFER_ENCODING, parseData } from "./services/database/parser";
-import findMany from "./services/database/findManyRequest";
 
 export default async function Home({
   params,

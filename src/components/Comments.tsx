@@ -5,7 +5,7 @@ import { InputTextarea } from "primereact/inputtextarea";
 import { useEffect, useRef, useState } from "react";
 
 import styles from "./comments.module.css";
-import { updateRecipeMetaData } from "../details/actions";
+import { updateRecipeMetaData } from "@/app/details/actions";
 
 export interface CommentsProps {
   id: number;
